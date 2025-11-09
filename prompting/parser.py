@@ -416,7 +416,7 @@ class LLMResponseParser:
             agent_name, obs, robot_state, place_target_name
             )
         if place_target_pose is None:
-            parsed = f"Target {target_name} cannot be parsed, bad format."
+            parsed = f"Target {place_target_name} cannot be parsed, bad format."
             return False, parsed, []
         # update the target quat!
         place_target_pose[3:] = pick_target_pose[3:]
@@ -553,11 +553,13 @@ class LLMResponseParser:
 
         current_pose = np.concatenate(
             [robot_state.ee_xpos, robot_state.ee_xquat]
-        ) # return to this after sweeo 
+        ) # return to this after sweep 
             
         target_quat = self.env.get_target_quat(agent_name, target_name) # should stay Bob's desired flat current quat
         # target_pos[2] = robot_state.ee_xpos[2] # stay current height
-        target_pos[1] -= 0.25 # offset the hard-coded val for MOVE
+        # Bob starts behind the cube (target_pos already has +0.3 offset from cube)
+        # Move closer to cube for initial sweep position
+        target_pos[1] -= 0.25 # adjust to get close enough to push cube toward dustpan
         target_pose1 = np.concatenate([target_pos, target_quat])
 
         

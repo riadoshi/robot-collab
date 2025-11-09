@@ -496,7 +496,9 @@ class MultiArmRRT:
         # if np.linalg.norm(physics.data.body('red_cube').xpos  - physics.data.body('dustpan').xpos) < 0.1:
         # if 54 in collided_id1 or 54 in collided_id2:
         if len(undesired_ids) > 0 and show:
-            print(bad_pairs)
+            print("[DEBUG:get_collided_links]", bad_pairs)
+
+
             img_arr = np.concatenate(
                 [
                      physics.render(camera_id=i, height=400, width=400,) for i in range(3)

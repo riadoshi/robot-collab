@@ -1,3 +1,4 @@
+
 import os
 import copy
 import time
@@ -151,12 +152,16 @@ class SweepTask(MujocoSimEnv):
                 ret = self.physics.data.site(target_name).xpos.copy() 
                 if 'cube' in splitted:
                     if agent_name == "Alice":
-                        cube_x = ret[1]
-                        ret[1] = max(cube_x-0.4, SWEEP_FRONT_BOUND)
-                        ret[2] = SWEEP_DUSTPAN_HEIGHT
+                        cube_y = ret[1]
+                        ret[1] = max(cube_y - 0.26, SWEEP_FRONT_BOUND)
+                        ret[2] = self.physics.data.site("table_top").xpos[2] + 0.015
+                        # cube_x = ret[1]
+                        # ret[1] = max(cube_x-0.4, SWEEP_FRONT_BOUND)
+                        # ret[2] = SWEEP_DUSTPAN_HEIGHT
+                        # print("skipping offsets")
                     else:
                         ret[1] += 0.3
-                        ret[2] += SWEEP_BROOM_OFFSET
+                        ret[2] += self.physics.data.site("table_top").xpos[2] + SWEEP_BROOM_OFFSET
             except:
                 pass
         return ret
@@ -502,5 +507,3 @@ if __name__ == "__main__":
     # 
     # plt.show()
     # im.save('sorting_seed0.jpg')
-
-
